@@ -8,11 +8,18 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.use("/api/v1/posts", postRoutes);
-app.use("/api/v1/users", userRoutes);
+app.use("/api/v2/posts", postRoutes);
+app.use("/api/v2/users", userRoutes);
+
+app.get("/api/v2/health", (_req, res) => {
+    res.send({
+        status: "Ok",
+        message: "API do Blogpress está rodando. 🚀"
+    });
+});
 
 app.get("/", (_req, res) => {
-    res.send("API do Blog está rodando 🚀");
+    res.send("API do Blogpress está rodando. 🚀");
 });
 
 export default app;
