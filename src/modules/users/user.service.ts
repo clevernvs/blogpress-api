@@ -2,12 +2,12 @@ import { User } from "./user.model";
 
 export class UserService {
     async findAll() {
-        const users = User.findAll();
+        const users = await User.findAll();
         return users;
     }
 
     async findById(id: number) {
-        const user = User.findByPk(id);
+        const user = await User.findByPk(id);
         return user;
     }
 

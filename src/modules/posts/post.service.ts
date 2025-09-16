@@ -2,12 +2,12 @@ import { Post } from "./post.model";
 
 export class PostService {
     async findAll() {
-        const posts = Post.findAll();
+        const posts = await Post.findAll();
         return posts;
     }
 
     async findById(id: number) {
-        const post = Post.findByPk(id);
+        const post = await Post.findByPk(id);
         return post;
     }
 
