@@ -4,8 +4,12 @@ import { sequelize } from "../../config/database";
 interface PostAttributes {
     id: number;
     title: string;
+    slug: string;
     content: string;
-    author: string;
+    status: string;
+    published_at: Date;
+    author_id: number;
+    category_id: number;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -16,8 +20,12 @@ interface PostCreationAttributes extends Optional<PostAttributes, "id" | "create
 export class Post extends Model<PostAttributes, PostCreationAttributes> implements PostAttributes {
     public id!: number;
     public title!: string;
+    public slug!: string;
     public content!: string;
-    public author!: string;
+    public status!: string;
+    public published_at!: Date;
+    public author_id!: number;
+    public category_id!: number;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
@@ -33,14 +41,28 @@ Post.init(
             type: DataTypes.STRING,
             allowNull: false
         },
+        slug: {
+            type: DataTypes.STRING(200),
+            allowNull: false,
+            unique: true
+        },
         content: {
             type: DataTypes.TEXT,
             allowNull: false
         },
-        author: {
-            type: DataTypes.STRING,
+        status: {
+            type: DataTypes.ENUM("draft", "published", "archived"),
+            defaultValue: "draft",
+        },
+        author_id: {
+            type: DataTypes.INTEGER,
             allowNull: false
-        }
+        },
+        category_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        published_at: DataTypes.DATE,
     },
     {
         sequelize,
@@ -48,3 +70,9 @@ Post.init(
         timestamps: true
     }
 );
+
+// Post.belongsTo(Author, { foreignKey: "author_id" });
+// Author.hasMany(Post, { foreignKey: "author_id" });
+
+// Post.belongsTo(Category, { foreignKey: "category_id" });
+// Category.hasMany(Post, { foreignKey: "category_id" });
