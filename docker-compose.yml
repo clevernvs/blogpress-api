@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - blopress-net
+
+  api:
+    build: .
+    container_name: node_api
+    restart: always
+    ports:
+      - "${API_PORT}:3000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/mydb
+    networks:
+      - blopress-net
+
+networks:
+  blopress-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
