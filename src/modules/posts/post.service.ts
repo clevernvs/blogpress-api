@@ -1,35 +1,22 @@
-import { Post, posts } from "./post.model";
+// import { Post, posts } from "./post.model";
 
-let currentId = 1;
+// let currentId = 1;
 
-export const PostService = {
-    getAll: (): Post[] => {
-        return posts;
-    },
+export class PostService {
+    async findAll() {
+        return "ok";
+    }
 
-    getById: (id: number): Post | undefined => {
-        return posts.find(post => post.id === id);
-    },
+    async findById(id: number) {
+        return id;
+    }
 
-    create: (title: string, content: string, author: string): Post => {
-        const newPost: Post = {
-            id: currentId++,
-            title,
-            content,
-            author,
-            createdAt: new Date()
-        };
+    async create(data: any) {
 
-        posts.push(newPost);
-        return newPost;
-    },
+        return data;
+    }
 
-    delete: (id: number): boolean => {
-        const index = posts.findIndex(post => post.id === id);
-        if (index !== -1) {
-            posts.splice(index, 1);
-            return true;
-        }
-        return false;
+    async delete(id: number) {
+        return id;
     }
 };

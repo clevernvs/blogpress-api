@@ -1,31 +1,29 @@
 import { Request, Response } from "express";
 import { PostService } from "./post.service";
 
-export const PostController = {
-    getAll: (req: Request, res: Response) => {
-        res.json(PostService.getAll());
-    },
+export const postService = new PostService();
 
-    getById: (req: Request, res: Response) => {
-        const id = Number(req.params.id);
-        const post = PostService.getById(id);
-        if (!post) return res.status(404).json({ message: "Post não encontrado" });
-        res.json(post);
-    },
+export const getAllPosts = async (_req: Request, res: Response) => {
+    const allPosts = postService.findAll();
+    res.json(allPosts);
+}
 
-    create: (req: Request, res: Response) => {
-        const { title, content, author } = req.body;
-        if (!title || !content || !author) {
-            return res.status(400).json({ message: "Campos obrigatórios: title, content, author" });
-        }
-        const newPost = PostService.create(title, content, author);
-        res.status(201).json(newPost);
-    },
+export const getPostById = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const post = postService.findById(Number(id));
+    res.json(post);
+}
 
-    delete: (req: Request, res: Response) => {
-        const id = Number(req.params.id);
-        const success = PostService.delete(id);
-        if (!success) return res.status(404).json({ message: "Post não encontrado" });
-        res.status(204).send();
-    }
-};
+export const createPost = async (req: Request, res: Response): Promise<void> => {
+    const postData = req.body;
+    const post = await postService.create(postData);
+
+    res.status(201).json(post);
+}
+
+export const deletePost = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await postService.delete(Number(id));
+    res.json(result);
+}
+
