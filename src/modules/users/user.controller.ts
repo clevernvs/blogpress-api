@@ -12,14 +12,31 @@ export const getAllUsers = async (_req: Request, res: Response) => {
     }
 }
 
-// export const getUserById = async (_req: Request, res: Response) => {
-//     res.json(UserService.findById());
-// }
+export const getUserById = async (req: Request, res: Response): Promise<void> => {
 
-// export const createUser = async (_req: Request, res: Response) => {
-//     res.json(UserService.create());
-// }
+    const { id } = req.params;
 
-// export const deleteUser = async (_req: Request, res: Response) => {
-//     res.json(UserService.delete());
+    try {
+        const user = await userService.findById(Number(id));
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar usuário.' });
+    }
+}
+
+export const createUser = async (req: Request, res: Response): Promise<void> => {
+    const userData = req.body;
+    try {
+        const user = await userService.create(userData);
+        res.status(201).json(user);
+
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao criar usupario.' });
+    }
+}
+
+// export const deleteUser = async (req: Request, res: Response) => {
+//     const { id } = req.params;
+//     const user = UserService.delete(Number(id));
+//     res.json(user);
 // }
