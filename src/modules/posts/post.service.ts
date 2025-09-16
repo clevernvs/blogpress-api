@@ -1,14 +1,14 @@
-// import { Post, posts } from "./post.model";
-
-// let currentId = 1;
+import { Post } from "./post.model";
 
 export class PostService {
     async findAll() {
-        return "ok";
+        const posts = Post.findAll();
+        return posts;
     }
 
     async findById(id: number) {
-        return id;
+        const post = Post.findByPk(id);
+        return post;
     }
 
     async create(data: any) {
