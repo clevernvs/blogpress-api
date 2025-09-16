@@ -43,7 +43,7 @@ User.init(
     },
     {
         sequelize,
-        tableName: "posts",
+        tableName: "users",
         timestamps: true
     }
 );
